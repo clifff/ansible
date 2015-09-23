@@ -1,4 +1,5 @@
 ---
 - hosts: docker-droplet
   roles:
+    - { role: common }
     - { role: cron }
