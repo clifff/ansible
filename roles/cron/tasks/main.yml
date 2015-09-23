@@ -1,0 +1,5 @@
+---
+- include_vars: env.yml
+- cron: name="update clifff.com" minute="0"
+        job="docker run -e "GITHUB_OAUTH_TOKEN="{{ github_oauth_token }}"" -e "PINBOARD_API_KEY="{{ pinboard_api_key }}"" -e "S3_ID="{{ s3_id }}"" -e "S3_SECRET="{{ s3_secret }}"" clifff/clifff.com 2>&1 | /usr/bin/logger -t clifff.com"
+
