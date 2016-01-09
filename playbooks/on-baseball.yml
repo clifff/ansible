@@ -1,0 +1,5 @@
+---
+- hosts: on-baseball
+  roles:
+    - { role: common }
+    - { role: on-baseball }

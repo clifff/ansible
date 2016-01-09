@@ -1,0 +1,29 @@
+---
+- include_vars: ssh.yml
+
+# Setup user things
+- group: name=docker state=present
+- user: name=clifff shell=/bin/bash append=yes groups=docker
+- service: name=docker state=restarted
+- file: path=/home/clifff/.ssh state=directory mode=0755
+- name: Setup authorized_keys
+  command: cp /root/.ssh/authorized_keys /home/clifff/.ssh/authorized_keys
+- file: path=/home/clifff/.ssh/authorized_keys owner=clifff mode=0644
+- copy:
+      content: "{{ id_rsa }}"
+      dest: /home/clifff/.ssh/id_rsa
+
+# Setup docker-compose
+- name: add pip
+  apt: pkg=python-pip state=present update_cache=yes
+- name: add docker-compose
+  command: pip install docker-compose
+
+# Setup samba share
+- apt: pkg=samba state=present
+- name: Create Samba Password for User(s)
+  shell: (echo {{ samba_password }}; echo {{ samba_password }}) | smbpasswd -s -a clifff
+- copy:
+      src: ../templates/samba.conf
+      dest: /etc/samba/smb.conf
+- service: name=smbd state=restarted
