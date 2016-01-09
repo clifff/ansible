@@ -2,4 +2,4 @@
 - include_vars: env.yml
 - cron: name="update clifff.com" minute="0"
         job="docker pull clifff/clifff.com && docker run -e "GITHUB_OAUTH_TOKEN="{{ github_oauth_token }}"" -e "PINBOARD_API_KEY="{{ pinboard_api_key }}"" -e "S3_ID="{{ s3_id }}"" -e "S3_SECRET="{{ s3_secret }}"" clifff/clifff.com bundle exec rake deploy 2>&1 | /usr/bin/logger -t clifff.com"
-
+- copy: src=../templates/docker-clean.sh dest=/etc/cron.daily/ mode="u+rwx"
