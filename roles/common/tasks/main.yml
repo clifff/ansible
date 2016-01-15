@@ -23,3 +23,9 @@
   with_items:
     - { regexp: "^PasswordAuthentication", line: "PasswordAuthentication no" }
   notify: restart ssh
+
+- name: Patch openssh for CVE-2016-0777
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: UseRoaming no
+  notify: restart ssh
