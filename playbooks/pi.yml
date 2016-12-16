@@ -1,5 +1,6 @@
 ---
-- hosts: docker-droplet
+- hosts: pi
+  remote_user: clifff
   roles:
     - { role: common }
     - { role: cron }

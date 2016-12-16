@@ -1,0 +1,19 @@
+---
+- hosts: pi
+  remote_user: pirate
+  tasks:
+  - name: Setup user
+    user:
+      name: clifff
+      shell: /bin/bash
+      generate_ssh_key: true
+  - name: Setup ssh key
+    authorized_key:
+      user: clifff
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  - name: Allow passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^ALL'
+      line: 'ALL            ALL = (ALL) NOPASSWD: ALL'
