@@ -1,6 +1,6 @@
 ---
 - name: Enable automatic updates
-  apt: pkg=unattended-upgrades state=installed
+  apt: pkg=unattended-upgrades state=present
 
 - name: Copy unattended-upgrades configuration files in place.
   template: >
@@ -22,4 +22,4 @@
     state=present
   with_items:
     - { regexp: "^PasswordAuthentication", line: "PasswordAuthentication no" }
-  notify: restart ssh
+  notify: restart sshd

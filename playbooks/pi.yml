@@ -3,4 +3,4 @@
   remote_user: clifff
   roles:
     - { role: common }
-    - { role: cron }
+    - { role: pihole }

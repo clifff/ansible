@@ -1,0 +1,36 @@
+---
+- name: Add cloudflared user
+  user:
+    name: cloudflared
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: false
+
+- name: Install argo-tunnel
+  unarchive:
+    src: https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz
+    dest: /usr/local/bin
+    creates: /usr/local/bin/cloudflared
+    remote_src: yes
+    owner: cloudflared
+
+- name: Changing perm of "/usr/local/bin/cloudflared", adding "+x"
+  file:
+    dest: /usr/local/bin/cloudflared
+    mode: a+x
+
+- name: Config file for cloudflared
+  template:
+    src: ../templates/cloudflared
+    dest: /etc/default/cloudflared
+    owner: cloudflared
+
+- name: Set up cloudflard service template
+  template:
+    src: ../templates/cloudflared.service
+    dest: /etc/systemd/system/cloudflared.service
+
+- name: Start service cloudflared
+  service:
+    name: cloudflared
+    state: started
